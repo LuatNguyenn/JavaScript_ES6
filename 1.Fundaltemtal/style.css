@@ -18,7 +18,7 @@
 
 #player1,
 #player2 {
-  padding: 20px!important;
+  padding: 20px !important;
   text-align: center;
   /* width: 10%; */
 }
@@ -141,7 +141,8 @@ body {
 
 .btn-new,
 .btn-roll,
-.btn-hold {
+.btn-hold,
+.btn-hide  {
   position: absolute;
   width: 200px;
   left: 50%;
@@ -188,7 +189,9 @@ i {
 .btn-hold {
   top: 467px;
 }
-
+.btn-hide {
+  top: 510px;
+}
 .dice {
   position: absolute;
   left: 50%;
@@ -197,7 +200,16 @@ i {
   height: 100px;
   box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.1);
 }
-
+.informResult {
+  position: absolute;
+  left: 50%;
+  top: 178px;
+  transform: translateX(-50%);
+  height: 100px;
+  font-size: 54px;
+  font-weight: bold;
+  color: red;
+}
 .winner {
   background-color: #f7f7f7;
 }

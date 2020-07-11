@@ -1,4 +1,4 @@
-/*
+
 //function expression 
 
 var whatyoudo = function (job, name) {
@@ -68,22 +68,19 @@ var John = {
 }
 John.calAge()
 console.log(John);
-*/
+
 
 
 
 //DOM and DOM MANIPULATION 
 console.log('THIS IS THE DOM SECTION (GAME)');
-
-var scores, roundScore;
+var scores;
 numberArray0 = [], numberArray1 = [];
 
 var x = document.querySelector('#score-0').textContent; // just read the content and store 'x'
-scores = [0, 0];
-roundScore = 0;
+var scores = [0, 0];
 var activePlayer = 0; //player 1 = 0 player 2 = 1
 document.querySelector('.dice').style.display = 'none';
-// console.log(dice);
 console.log(x);
 
 // can use InnerHTML or textContent but only plain text applied
@@ -118,9 +115,9 @@ function disableElement(turn) {
 document.querySelector('.btn-roll').addEventListener('click', () => {
     console.log('this is outside scope' + this.activePlayer);
     document.querySelector('.dice').style.display = 'block';
-    let totalScore0 = 0;
-    let totalScore1 = 0;
+
     if (activePlayer == 0) {
+        let totalScore0 = 0;
         let dice = 0;
         dice = Math.floor(Math.random() * 6) + 1;
         document.querySelector('.dice').src = 'dice-' + dice + '.png';
@@ -132,17 +129,27 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
 
             totalScore0 += numberArray0[i];
             document.querySelector('#score-' + activePlayer).innerHTML = totalScore0;
-            if (totalScore0 >= 100) {
-                document.querySelector('#score-' + activePlayer).innerHTML = totalScore0 - numberArray0[numberArray0.length-1];
+            if (totalScore0 > 6) {
+                document.querySelector('#score-' + activePlayer).innerHTML = 'LOSE';
+                if (activePlayer === 0) {
+                    turnOption(1);
+                } else {
+                    turnOption(0);
+                }
+            } else if (totalScore0 == 6) {
+                document.querySelector('#score-' + activePlayer).innerHTML = 'HIGHEST SCORE';
                 if (activePlayer === 0) {
                     turnOption(1);
                 } else {
                     turnOption(0);
                 }
             }
-
         }
+        scores[0] = document.getElementById('score-0').textContent;
+
     } else if (activePlayer == 1) {
+        let totalScore1 = 0;
+
         console.log('should be 1', activePlayer);
         let dice2 = 0;
         dice2 = Math.floor(Math.random() * 6) + 1;
@@ -153,27 +160,61 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
         document.querySelector('#generatedNumbers-' + activePlayer).innerHTML = numberArray1;
 
         for (let i = 0; i < numberArray1.length; i++) {
-
             totalScore1 += numberArray1[i];
             document.querySelector('#score-' + activePlayer).innerHTML = totalScore1;
-            if (totalScore1 >= 100) {
-                document.querySelector('#score-' + activePlayer).innerHTML = totalScore1 - numberArray1[numberArray1.length-1];
-                if (activePlayer === 0) {
-                    turnOption(1);
-                } else {
-                    turnOption(0);
-                }
+            if (totalScore1 > 6) {
+                document.querySelector('#score-' + activePlayer).innerHTML = 'LOSE';
+                changeTurn(activePlayer);
+            } else if (totalScore1 == 6) {
+                document.querySelector('#score-' + activePlayer).innerHTML = 'HIGHEST SCORE';
+                changeTurn(activePlayer);
             }
         }
+        scores[1] = document.getElementById('score-1').textContent;
     }
-    compareResult(totalScore0,totalScore1);
+    console.log(scores);
+    // compareResult(totalScore0,totalScore1);
 })
 
-function compareResult(result0,result1){
-    console.log('compare ' + result0 + " qith " + result1);
+
+document.querySelector('.btn-hold').addEventListener('click', () => {
+    console.log('this hold', scores[0]);
+    console.log('this hold', scores[1]);
+    // changeTurn(activePlayer);
+    if(scores[0] != 0 && scores[1] != 0){
+        compareResult(scores[0], scores[1]);
+    }
+    else if(scores[0] == 0 || scores[1] == 0){
+        changeTurn(activePlayer);
+    }
+})
+
+
+function changeTurn(recentTurn) {
+    if (recentTurn === 0) {
+        turnOption(1);
+    } else {
+        turnOption(0);
+    }
 }
 
+function compareResult(result0, result1) {
+    console.log('compare', result0,result1);
+    document.querySelector('.dice').style.display = 'none';
+    if(result0 > result1 && result0 <=6){
+        document.querySelector('.informResult').innerHTML = '<em>Player 1 won!</em>'
+    }
+    else if(result0 < result1 && result0 > 6){
+        document.querySelector('.informResult').innerHTML = '<em>Player 2 won!</em>'
+    }
+    else {
+        document.querySelector('.informResult').innerHTML = '<em>Tie!</em>'
+    }
+}
 
+function newGame(){
+    window.location.href = 'http://127.0.0.1:5500/index.html';
+}
 
 function disableBtn() {
     let btn1 = document.querySelector('#player0');
@@ -181,3 +222,11 @@ function disableBtn() {
     btn2.disabled = true;
     btn1.disabled = true;
 }
+
+function enableBtn() {
+    let btn1 = document.querySelector('#player0');
+    let btn2 = document.querySelector('#player1');
+    btn2.disabled = false;
+    btn1.disabled = false;
+}
+
