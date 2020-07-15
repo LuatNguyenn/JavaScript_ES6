@@ -173,7 +173,7 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
         scores[1] = document.getElementById('score-1').textContent;
     }
     console.log(scores);
-    // compareResult(totalScore0,totalScore1);
+    compareResult(totalScore0,totalScore1);
 })
 
 
@@ -213,7 +213,7 @@ function compareResult(result0, result1) {
 }
 
 function newGame(){
-    window.location.href = 'http://127.0.0.1:5500/index.html';
+    window.location.href = 'http://127.0.0.1:5500/1.Fundaltemtal/index.html';
 }
 
 function disableBtn() {
