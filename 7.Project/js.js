@@ -1,4 +1,5 @@
 var budgetController = (function () {
+    var values = [];
     var Expense = function (id, description, value) {
         this.id = id;
         this.description = description;
@@ -42,6 +43,18 @@ var budgetController = (function () {
             data.allItems[type].push(newItem);
             return newItem;
         },
+        calBudget: function (inputValue, type) {
+            let val;
+            var totalBudget;
+            if (type === 'exp' ? inputValue = -inputValue : inputValue = inputValue);
+            val = parseInt(inputValue);
+            if (inputValue != "" && inputValue != undefined && inputValue != NaN) values.push(val);
+            totalBudget = values.reduce(function (a, b) {
+                return a + b;
+            }, 0);
+
+            return totalBudget;
+        }
     }
 
 })();
@@ -55,7 +68,8 @@ var UIController = (function () {
         inputValue: '.add__value',
         inputBtn: '.add__btn',
         incomeContainer: '.income__list',
-        expensesContainer: '.expenses__list'
+        expensesContainer: '.expenses__list',
+        totalBudgetValue: '.budget__value'
     }
     return {
         getInput: function () {
@@ -73,7 +87,7 @@ var UIController = (function () {
 
             if (type === 'inc') {
                 element = DOMString.incomeContainer
-                html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div> <div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div> </div>'
+                html = '<div class="item    clearfix" id="income-%id%"><div class="item__description">%description%</div> <div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div> </div>'
             } else if (type === 'exp') {
                 element = DOMString.expensesContainer;
                 html = '<div class="item clearfix" id="expense-0"><div class="item__description">Apartment rent</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
@@ -93,10 +107,21 @@ var UIController = (function () {
             var fields;
             fields = document.querySelectorAll(DOMString.inputDescription + ', ' + DOMString.inputValue)
             fieldArr = Array.prototype.slice.call(fields);
+            console.log(fieldArr);
             fieldArr.forEach(function (current, index, array) {
                 current.value = "";
             });
             fieldArr[0].focus();
+        },
+
+        updateTotalBudget(totalNumber) {
+            var incomes;
+            console.log('total', totalNumber)
+            document.querySelector(DOMString.totalBudgetValue).innerHTML = totalNumber;
+            income = document.querySelector('.item__value').value;
+            console.log(income)
+            // incomes = Array.prototype.slice.call(income);
+            console.log('this is income', incomes);
         },
 
         getDOMString: function () {
@@ -133,7 +158,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         //4. clear fields
         UICtrl.clearFields();
         //4. Calculate the budget
-
+        UICtrl.updateTotalBudget(budgetCtrl.calBudget(input.value, input.type));
         //5. display budget on UI
         console.log('here')
     };
