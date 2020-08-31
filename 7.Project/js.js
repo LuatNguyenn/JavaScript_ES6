@@ -1,3 +1,14 @@
+var data = {
+    allItems: {
+        exp: [],
+        inc: [],
+    },
+    total: {
+        exp: 0,
+        inc: 0
+    }
+}
+
 var budgetController = (function () {
     var values = [];
     var Expense = function (id, description, value) {
@@ -10,18 +21,6 @@ var budgetController = (function () {
         this.description = description;
         this.value = value;
     };
-
-
-    var data = {
-        allItems: {
-            exp: [],
-            inc: [],
-        },
-        total: {
-            exp: 0,
-            inc: 0
-        }
-    }
 
     return {
         addItem: function (type, desc, val) {
@@ -44,15 +43,13 @@ var budgetController = (function () {
             return newItem;
         },
         calBudget: function (inputValue, type) {
-            let val;
-            var totalBudget;
-            if (type === 'exp' ? inputValue = -inputValue : inputValue = inputValue);
-            val = parseInt(inputValue);
-            if (inputValue != "" && inputValue != undefined && inputValue != NaN) values.push(val);
+            let val = parseInt(inputValue);
+            if (inputValue != "" && inputValue != undefined && inputValue != NaN) data.total[type] = val + data.total[type];      
+            if(type === 'exp' ? val = -val : val = val);
+            values.push(val);
             totalBudget = values.reduce(function (a, b) {
                 return a + b;
             }, 0);
-
             return totalBudget;
         }
     }
@@ -69,7 +66,9 @@ var UIController = (function () {
         inputBtn: '.add__btn',
         incomeContainer: '.income__list',
         expensesContainer: '.expenses__list',
-        totalBudgetValue: '.budget__value'
+        totalBudgetValue: '.budget__value',
+        totalIncomeValue: '.budget__income--value',
+        totalExpenseValue: '.budget__expenses--value'
     }
     return {
         getInput: function () {
@@ -115,13 +114,11 @@ var UIController = (function () {
         },
 
         updateTotalBudget(totalNumber) {
-            var incomes;
-            console.log('total', totalNumber)
             document.querySelector(DOMString.totalBudgetValue).innerHTML = totalNumber;
             income = document.querySelector('.item__value').value;
-            console.log(income)
-            // incomes = Array.prototype.slice.call(income);
-            console.log('this is income', incomes);
+            document.querySelector(DOMString.totalIncomeValue).innerHTML = data.total.inc;
+            document.querySelector(DOMString.totalExpenseValue).innerHTML = data.total.exp;
+
         },
 
         getDOMString: function () {
@@ -160,12 +157,11 @@ var controller = (function (budgetCtrl, UICtrl) {
         //4. Calculate the budget
         UICtrl.updateTotalBudget(budgetCtrl.calBudget(input.value, input.type));
         //5. display budget on UI
-        console.log('here')
     };
 
     return {
         init: function () {
-            console.log('applied');
+            console.log('Application running');
             setupEventListener();
         }
     }
