@@ -30,14 +30,26 @@ console.log(ages);
 
 //Arrow func 2 
 //ES5
+
 var box5 = {
     color: 'green',
     position: 1,
     clickMe:function(){
+        var self = this;
+
+
+        var draftObj = {
+            color:'color 2',
+            position:1,
+        }
+
+
         document.querySelector('.green').addEventListener('click',
         function(){
-            var str = 'this is box number ' + this.position + 
-            ' and it is ' + this.color;
+
+            var str = 'this is box number ' + draftObj.position + 
+            ' and it is ' + draftObj.color; // this.position and this.color is undefined
+            //because this.keyword doesn't point to box5 obj
             alert(str);
         })
     }
@@ -45,6 +57,7 @@ var box5 = {
 box5.clickMe();
 
 // ES6
+
 var box6 = {
     color: 'green',
     position: 1,
@@ -53,7 +66,7 @@ var box6 = {
         ()=>{
             var str = 'this is box number ' + this.position + 
             ' and it is ' + this.color;
-            alert(str);
+            // alert(str);
         })
     }
 }
