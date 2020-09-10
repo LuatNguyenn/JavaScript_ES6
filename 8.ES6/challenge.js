@@ -19,10 +19,11 @@ class Parks extends Element {
 }
 
 class Streets extends Element {
-    constructor(name, buildYear, length, size = 3) {
+    constructor(name, buildYear, length, size = 3, classification) {
         super(name, buildYear);
         this.length = length;
         this.size = size;
+        
     }
     classifyStreet() {
         const classification = new Map();
